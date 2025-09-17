@@ -46,6 +46,17 @@ def colide(tabuleiro, peca):
                         return True
         return False        
 
+def calcular_pontos(linhas):
+    if linhas == 1:
+       return 100
+    elif linhas == 2:
+       return 300
+    elif linhas == 3:
+       return 500
+    elif linhas == 4:
+       return 800
+    return 0
+
 class peca:
     def __init__(self, matriz):
         self.x = COLUNAS // 2 - len(matriz[0]) // 2
@@ -85,17 +96,23 @@ def desenhar_peca(screen, peca):
                 cor= CORES[val]
                 pygame.draw.rect(screen, cor, ((peca.x+x)*TAMANHO, (peca.y+y)*TAMANHO, TAMANHO-1, TAMANHO-1))
 
+def desenhar_score(screen, fonte, score):
+    texto = fonte.render(f"Score: {score}", True, (255,255,255))
+    screen.blit(texto,(10,10))
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((LARGURA, ALTURA))
     pygame.display.set_caption("Tetris")
     clock = pygame.time.Clock()
+    fonte = pygame.font.SysFont("Arial", 24)
 
     tabuleiro = [[0] * COLUNAS for _ in range(LINHAS)]
     peca_atual = nova_peca()
     queda_tempo = 0
     velocidade_queda = 500
     rodando = True
+    score = 0
     
     while rodando:
         delta = clock.tick()
@@ -139,11 +156,10 @@ def main():
         screen.fill((0,0,0))
         desenhar_tabuleiro(screen, tabuleiro)
         desenhar_peca(screen, peca_atual)
+        desenhar_score(screen,fonte,score)
         pygame.display.flip()
 
     pygame.quit()
    
 if __name__ == "__main__":
     main()
-
-        
